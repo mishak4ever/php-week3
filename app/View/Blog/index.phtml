@@ -1,0 +1,124 @@
+<div class="header">
+    <h2>Blog Name</h2>
+</div>
+
+<div class="row">
+    <div class="leftcolumn">
+        <?php
+        foreach ($messages as $message) {
+            include('_message.phtml');
+        }
+        ?>
+
+    </div>
+    <div class="rightcolumn">
+        <?php include('_form.phtml'); ?>
+        <?php include('_about.phtml'); ?>
+        <?php include('_popular.phtml'); ?>
+        <?php include('_follow.phtml'); ?>
+    </div>
+</div>
+
+<br>
+<br>
+
+<div class="footer">
+    <h2>Footer</h2>
+</div>
+
+
+<style>
+    body {
+        font-family: Arial;
+        padding: 20px;
+        background: #f1f1f1;
+    }
+    body h4,h5{
+        margin: 5px;
+    }
+
+    /* Header/Blog Title */
+    .header {
+        padding: 5px;
+        font-size: 40px;
+        text-align: center;
+        background: white;
+    }
+
+    /* Left column */
+    .leftcolumn {
+        float: left;
+        width: 75%;
+    }
+
+    /* Right column */
+    .rightcolumn {
+        float: left;
+        width: 23%;
+        padding-left: 2%;
+    }
+    .rightcolumn textarea{
+        /*float: left;*/
+        font-size: 14;
+    }
+
+    /* Fake image */
+    .blogimg {
+        /*background-color: #aaa;*/
+        width: 90%;
+        padding: 20px;
+        height:100px;
+        display: flex;
+    }
+
+
+    .fakeimg {
+        background-color: #aaa;
+        width: 90%;
+        padding: 20px;
+    }
+
+    /* Add a card effect for articles */
+    .card {
+        background-color: white;
+        padding: 5px 20px 0px 20px;
+        margin-top: 20px;
+    }
+    .leftcolumn .card h5{
+        text-align: right;
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+    .remove {
+        /*padding: 20px;*/
+        position: relative;
+        left: 170;
+        top: -20;
+    }
+    .remove img{
+        /*padding: 20px;*/
+        position: absolute;
+        left: -25;
+    }
+
+    /* Footer */
+    .footer {
+        padding: 20px;
+        text-align: center;
+        background: #ddd;
+        margin-top: 20px;
+    }
+
+    /* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
+    @media screen and (max-width: 800px) {
+        .leftcolumn, .rightcolumn {
+            width: 100%;
+            padding: 0;
+        }
+    }
+</style>
