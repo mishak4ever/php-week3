@@ -6,9 +6,11 @@ use App\Model\User as UserModel;
 use App\Model\Message;
 use Base\AbstractController;
 
-class Blog extends AbstractController {
+class Blog extends AbstractController
+{
 
-    function indexAction() {
+    public function indexAction()
+    {
         if (!$this->user) {
             $this->redirect('/user/register');
         }
@@ -27,7 +29,8 @@ class Blog extends AbstractController {
         ]);
     }
 
-    function sendmessageAction() {
+    public function sendmessageAction()
+    {
         if (!$this->user) {
             $this->redirect('/user/login');
         }
@@ -56,14 +59,11 @@ class Blog extends AbstractController {
         $this->redirect('/blog/index');
     }
 
-    function deletemessageAction() {
+    public function deletemessageAction()
+    {
         if (!$this->user) {
             $this->redirect('/user/login');
         }
-//            echo '<pre>';
-//            print_r($_GET);
-//            echo '</pre>';
-//            die;
         $success = true;
         if (isset($_GET['id']) && is_numeric($_GET['id']) && $this->user->isAdmin()) {
             try {
@@ -76,18 +76,15 @@ class Blog extends AbstractController {
         $this->redirect('/blog/index');
     }
 
-    function getimageAction() {
+    public function getimageAction()
+    {
         if (!$this->user) {
             $this->redirect('/user/login');
         }
-//        header('Content-type: image/png');
+        header('Content-type: image/png');
         $fileId = $_GET['id'];
         if (file_exists(PROJECT_ROOT_DIR . '/images/' . $fileId . '.png')) {
             include PROJECT_ROOT_DIR . '/images/' . $fileId . '.png';
-//        echo '<pre>';
-//            print_r($_SERVER['DOCUMENT_ROOT'] . '/images/' . $fileId . '.png');
-//            echo '</pre>';
-//            die;
         } else
             include PROJECT_ROOT_DIR . '/images/no_image.png';
     }

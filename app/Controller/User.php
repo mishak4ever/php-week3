@@ -33,7 +33,6 @@ class User extends AbstractController
         }
 
         return $this->view->render('User/register.phtml', [
-//                    'user' => UserModel::getById((int) $_GET['id'])
         ]);
     }
 
@@ -46,13 +45,6 @@ class User extends AbstractController
             $password = trim($_POST['password']);
             $name = trim($_POST['name']);
             $email = trim($_POST['email']);
-            /*
-              if (!$email) {
-              $this->view->assign('error', 'Email не может быть пустым');
-              $success = false;
-              }
-             * 
-             */
 
             if (mb_strlen($password) < 4) {
                 $this->view->assign('error', 'Пароль не может быть менее 4х символов');

@@ -7,7 +7,7 @@ use Base\AbstractController;
 
 class Api extends AbstractController {
 
-    function getMessageAction() {
+     public function getMessageAction() {
         $limit = 20;
         if (isset($_GET['limit']) && is_numeric($_GET['limit']))
             $limit = $_GET['limit'];
