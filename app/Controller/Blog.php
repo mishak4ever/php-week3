@@ -5,14 +5,20 @@ namespace App\Controller;
 use App\Model\User as UserModel;
 use App\Model\Message;
 use Base\AbstractController;
+use Base\Session;
 
 class Blog extends AbstractController
 {
 
     public function indexAction()
     {
+        $Session = Session::getInstance();
+        if ($Session->getUserId()) {
+            $user = UserModel::getById($_SESSION['user_id']);
+            $this->setUser($user);
+        }
         if (!$this->user) {
-            $this->redirect('/user/register');
+            $this->redirect('/user/login');
         }
         $limit = 20;
         $offset = 0;
@@ -67,6 +73,10 @@ class Blog extends AbstractController
         $success = true;
         if (isset($_GET['id']) && is_numeric($_GET['id']) && $this->user->isAdmin()) {
             try {
+                $message = Message::getById($_GET['id']);
+                if (file_exists(PROJECT_ROOT_DIR . '/images/' . $message->getImage() . '.png')) {
+                    unlink(PROJECT_ROOT_DIR . '/images/' . $message->getImage() . '.png');
+                }
                 Message::deleteById($_GET['id']);
             } catch (Exception $exc) {
                 echo $exc->getTraceAsString();

@@ -1,0 +1,50 @@
+{% include 'Layouts/header.twig' %}  
+<body>
+    <div class="registration-cssave">
+        <form action="{{  isRegister ? "/user/register" : "/user/login"  }} " method="post" name="reg_form" onsubmit="return validateForm()" >
+            <div class="registration-title">
+                <div class="title-div">
+                    <h3 class="text-center">
+                        {% if isRegister %}
+                            <a href="/user/login">Вход</a>
+                        {% else %}
+                            Вход
+                        {% endif %}
+                    </h3>
+                </div>
+                <div class="title-div">
+                    <h3 class="text-center">
+                        {% if isRegister %}
+                            Регистрация
+                        {% else %}
+                            <a href="/user/register">Регистрация</a>
+                        {% endif %}
+                    </h3>
+                </div>
+            </div>
+            {% if isRegister %}
+                <div class="form-group">
+                    <input class="form-control item" type="text" name="name" maxlength="15" minlength="4" id="name" placeholder="Имя" required>
+                </div>
+            {% endif %}
+            <div class="form-group">
+                <input class="form-control item" type="email" name="email" id="email" placeholder="Email" required>
+            </div>
+            <div class="form-group">
+                <input class="form-control item" type="password" name="password" minlength="4" id="password" placeholder="Пароль" required>
+            </div>
+            {% if isRegister %}
+                <div class="form-group">
+                    <input class="form-control item" type="password" name="password_" minlength="4" id="password_" placeholder="Пароль" required>
+                </div>
+            {% endif %}
+            <div class="form-group">
+                <button class="btn btn-primary btn-block create-account" type="submit">  {{isRegister ? "Регистрация" : "Вход"  }} </button>
+            </div>
+        </form>
+    </div>
+    {% if error %}
+        <span style="color: red">{{ error }}</span>
+    {% endif %}
+</body>
+{% include 'Layouts/footer.twig' %}

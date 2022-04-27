@@ -1,0 +1,48 @@
+{% include 'Layouts/header.twig' %}
+<body>
+    <div class="registration-cssave">
+        <form action="/user/change" method="post" name="reg_form" onsubmit="return validateForm();">
+            {% if success is not defined %}
+                <div class="registration-title">
+                    <div class="title-div">
+                        <h3 class="text-center">
+                            Смена пароля
+                        </h3>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <input class="form-control item" type="email" name="email" id="email" value="{{ email?email:"" }}" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <input class="form-control item" type="password" name="old_password" minlength="4" id="old_password" placeholder="Старый Пароль" required>
+                </div>
+                <div class="form-group">
+                    <input class="form-control item" type="text" name="password" minlength="4" id="password" placeholder="Пароль" required>
+                </div>
+                <div class="form-group">
+                    <input class="form-control item" type="text" name="password_" minlength="4" id="password_" placeholder="Пароль" required>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary btn-block create-account" type="submit" id="button_change"><i class="fa fa-refresh fa-spin" id="spinner" style="display: none;"></i> Отправить</button>
+                </div>
+            {% endif %}
+            {% if success %}
+                <br>
+                <span style="color: green;font-size: 18pt;">{{ success }} 
+                    <br>
+                    <br>
+                    <a href="/blog/index">Перейти в блог --></a>
+                </span>
+            {% endif %}
+            {% if error %}
+                <br>
+                <span style="color: red">{{ error }} </span>
+            {% endif %}
+        </form>
+    </div>
+
+</body>
+</html>
+{% include 'Layouts/footer.twig' %}

@@ -3,6 +3,7 @@
 namespace Base;
 
 use App\Controller\User;
+use App\Controller\Blog;
 
 class Application {
 
@@ -58,7 +59,7 @@ class Application {
         $this->route->addRoute('/blog', \App\Controller\Blog::class, 'index');
         $this->route->addRoute('/blog/', \App\Controller\Blog::class, 'index');
         //$this->route->addRoute('/blog/index', \App\Controller\Blog::class, 'index');
-        $this->route->addRoute('/', User::class, 'login');
+        $this->route->addRoute('/', Blog::class, 'index');
     }
 
     private function initController() {

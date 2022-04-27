@@ -1,0 +1,13 @@
+<script>
+    function validateForm() {
+        var pass = document.forms["reg_form"]["password"].value;
+        var pass_ = document.forms["reg_form"]["password_"].value;
+        if (pass !== pass_) {
+            alert("Пароли не совпадают");
+            return false;
+        }
+        document.getElementById('spinner').style.display = '';
+        document.getElementById('button_change').disabled = true;
+
+    }
+</script>

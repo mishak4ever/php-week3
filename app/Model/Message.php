@@ -6,7 +6,8 @@ use Base\AbstractModel;
 use App\Model\User;
 use Base\Db;
 
-class Message extends AbstractModel {
+class Message extends AbstractModel
+{
 
     protected $id;
     protected $text;
@@ -14,7 +15,8 @@ class Message extends AbstractModel {
     protected $image;
     protected $created_at;
 
-    public function __construct($user_id = "", $text = "", $image = "") {
+    public function __construct($user_id = "", $text = "", $image = "")
+    {
         if ($user_id)
             $this->user_id = $user_id;
         if ($text)
@@ -23,34 +25,41 @@ class Message extends AbstractModel {
             $this->image = $image;
     }
 
-    public function getImage() {
+    public function getImage()
+    {
         return $this->image;
     }
 
-    public function getText() {
+    public function getText()
+    {
         return $this->text;
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
-    public function getUserId() {
+    public function getUserId()
+    {
         return $this->user_id;
     }
 
-    public function getUser(): ?User {
+    public function getUser(): ?User
+    {
         return User::getById($this->user_id);
     }
 
     /**
      * @return mixed
      */
-    public function getCreatedAt() {
+    public function getCreatedAt()
+    {
         return $this->created_at;
     }
 
-    public static function getTable() {
+    public static function getTable()
+    {
         return 'messages';
     }
 
@@ -59,7 +68,8 @@ class Message extends AbstractModel {
      * @param mixed $data
      * @return \App\Model\Message
      */
-    public static function loadModel(array $data): Message {
+    public static function loadModel(array $data): Message
+    {
         $model = new self;
         $model->id = $data['id'];
         $model->text = $data['text'];
@@ -69,7 +79,8 @@ class Message extends AbstractModel {
         return $model;
     }
 
-    public function save() {
+    public function save()
+    {
         $db = Db::getInstance();
         $table = self::getTable();
         $insert = "INSERT INTO $table (user_id, `text`,image)
@@ -88,7 +99,8 @@ class Message extends AbstractModel {
      * @param int $offset
      * @return @result \App\Model\Message[]
      */
-    public static function getList(int $limit = 20, int $offset = 0): array {
+    public static function getList(int $limit = 20, int $offset = 0): array
+    {
         $db = Db::getInstance();
         $table = self::getTable();
         $result = [];
@@ -112,7 +124,8 @@ class Message extends AbstractModel {
      * @param int $offset
      * @return @result \App\Model\Message[]
      */
-    public static function getListByUser(int $user_id, int $limit = 0, int $offset = 0): array {
+    public static function getListByUser(int $user_id, int $limit = 0, int $offset = 0): array
+    {
         $db = Db::getInstance();
         $table = self::getTable();
         $result = [];
@@ -130,7 +143,8 @@ class Message extends AbstractModel {
      * @param int $id
      * @return @result bool
      */
-    public static function deleteById(int $id): bool {
+    public static function deleteById(int $id): bool
+    {
         $db = Db::getInstance();
         $table = self::getTable();
 
@@ -138,6 +152,27 @@ class Message extends AbstractModel {
         return $db->exec($delete, __METHOD__, [
                     ':id' => $id,]
         );
+    }
+
+    /**
+     * Получить сообщение по id
+     * @param int $id
+     * @return @result bool
+     */
+    public static function getById(int $id): ?Message
+    {
+        $db = Db::getInstance();
+        $table = self::getTable();
+
+        $select = "SELECT * FROM {$table}  WHERE id=:id";
+        $data = $db->fetchOne($select, __METHOD__, [
+            ':id' => $id,]);
+
+        if ($data) {
+            return self::loadModel($data);
+        }
+
+        return false;
     }
 
 }
