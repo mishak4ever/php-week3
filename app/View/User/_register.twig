@@ -41,10 +41,12 @@
             <div class="form-group">
                 <button class="btn btn-primary btn-block create-account" type="submit">  {{isRegister ? "Регистрация" : "Вход"  }} </button>
             </div>
+
+            {% if error %}
+                <br>
+                <span style="color: red">{{ error }}</span>
+            {% endif %}
         </form>
     </div>
-    {% if error %}
-        <span style="color: red">{{ error }}</span>
-    {% endif %}
 </body>
 {% include 'Layouts/footer.twig' %}

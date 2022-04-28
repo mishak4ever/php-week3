@@ -6,6 +6,7 @@ use App\Model\User as UserModel;
 use App\Model\Message;
 use Base\AbstractController;
 use Base\Session;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class Blog extends AbstractController
 {
@@ -47,10 +48,12 @@ class Blog extends AbstractController
             $text = htmlspecialchars($text);
             $image = "";
             if (!empty($_FILES['userfile']['tmp_name'])) {
-                $fileContent = file_get_contents($_FILES['userfile']['tmp_name']);
+                $blogImage = Image::make($_FILES['userfile']['tmp_name']);
                 $image = md5(';blabla' . time());
-                $path = PROJECT_ROOT_DIR . '/images/' . $image . '.png';
-                file_put_contents($path, $fileContent);
+                $publicPath = PROJECT_ROOT_DIR . '/images/';
+                $blogImage->resize(200, 200);
+                self::addWatermark($blogImage, "watermark");
+                $blogImage->save($publicPath . $image);
             }
 
             try {
@@ -74,8 +77,8 @@ class Blog extends AbstractController
         if (isset($_GET['id']) && is_numeric($_GET['id']) && $this->user->isAdmin()) {
             try {
                 $message = Message::getById($_GET['id']);
-                if (file_exists(PROJECT_ROOT_DIR . '/images/' . $message->getImage() . '.png')) {
-                    unlink(PROJECT_ROOT_DIR . '/images/' . $message->getImage() . '.png');
+                if (file_exists(PROJECT_ROOT_DIR . '/images/' . $message->getImage())) {
+                    unlink(PROJECT_ROOT_DIR . '/images/' . $message->getImage());
                 }
                 Message::deleteById($_GET['id']);
             } catch (Exception $exc) {
@@ -91,12 +94,26 @@ class Blog extends AbstractController
         if (!$this->user) {
             $this->redirect('/user/login');
         }
-        header('Content-type: image/png');
         $fileId = $_GET['id'];
-        if (file_exists(PROJECT_ROOT_DIR . '/images/' . $fileId . '.png')) {
-            include PROJECT_ROOT_DIR . '/images/' . $fileId . '.png';
+        if (file_exists(PROJECT_ROOT_DIR . '/images/' . $fileId)) {
+            $img = Image::make(PROJECT_ROOT_DIR . '/images/' . $fileId);
+            return $img->response();
         } else
             include PROJECT_ROOT_DIR . '/images/no_image.png';
+    }
+
+    public static function addWatermark(\Intervention\Image\Image $image, string $text = "")
+    {
+        $image->text(
+                $text,
+                5,
+                15,
+                function ($font) {
+                    $font->file(PROJECT_ROOT_DIR . '/html/fonts/' . 'arial.ttf')->size('24');
+                    $font->color('#FFFFFF');
+                    $font->align('left');
+                    $font->valign('top');
+                });
     }
 
 }

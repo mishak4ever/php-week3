@@ -39,9 +39,7 @@ class __TwigTemplate_8c3bcdccb02c28ecac65e266ded699f6e77938f4b4b04ce60cf85fe36cc
     <head>
         <link rel=\"stylesheet\" type=\"text/css\" href=\"/html/css/main.css\">
         <link rel=\"stylesheet\" type=\"text/css\" href=\"/html/css/font-awesome.min.css\">
-";
-        // line 7
-        echo "        <meta charset=\"UTF-8\">
+        <meta charset=\"UTF-8\">
         <title></title>
     </head>";
     }
@@ -53,7 +51,7 @@ class __TwigTemplate_8c3bcdccb02c28ecac65e266ded699f6e77938f4b4b04ce60cf85fe36cc
 
     public function getDebugInfo()
     {
-        return array (  44 => 7,  37 => 1,);
+        return array (  37 => 1,);
     }
 
     public function getSourceContext()

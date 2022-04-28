@@ -6,6 +6,7 @@ use App\Model\User as UserModel;
 use Base\AbstractController;
 use Base\Session;
 use Base\Mail;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class User extends AbstractController
 {
@@ -130,13 +131,15 @@ class User extends AbstractController
     {
         $user = UserModel::getById($_SESSION['user_id']);
         if ($user && !empty($_FILES['ava']['tmp_name'])) {
-            $fileContent = file_get_contents($_FILES['ava']['tmp_name']);
+
+            $avaImage = Image::make($_FILES['ava']['tmp_name']);
             $image = md5(';blabla' . time());
-            $path = PROJECT_ROOT_DIR . '/images/' . $image . '.png';
-            file_put_contents($path, $fileContent);
+            $publicPath = PROJECT_ROOT_DIR . '/images/';
+            $avaImage->resize(200, 200);
+            $avaImage->save($publicPath . $image);
 
             try {
-                $user->setAva($image . '.png')->update();
+                $user->setAva($image)->update();
             } catch (Exception $exc) {
                 echo $exc->getTraceAsString();
             }

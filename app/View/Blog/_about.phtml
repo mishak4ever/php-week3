@@ -2,7 +2,7 @@
     <h2><?= $user->getName(); ?></h2>
     <form method="post" action="/user/changeavatar" enctype="multipart/form-data" class="avatar-form">
         <label for="ava"><img src="<?= $user->getAva() ?? "/images/no_image.jpg" ?>" width="200" /></label>
-        <input type="file" id="ava" name="ava" /><br />
+        <input type="file" id="ava" name="ava"   accept=".jpg, .jpeg, .png" /><br />
         <input type="submit" value="Загрузить аву" />
     </form>
     <!--<div class="fakeimg" style="height:100px;">Avatar</div>-->
@@ -33,7 +33,6 @@
 
             fr.addEventListener("load", function () {
                 let form = document.querySelector('.avatar-form');
-//                document.querySelector("label").style.backgroundImage = "url(" + fr.result + ")";
                 form.submit();
             }, false);
 
