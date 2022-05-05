@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="/html/css/admin.css">
+        <link rel="stylesheet" type="text/css" href="/html/css/font-awesome.min.css">
+        <meta charset="UTF-8">
+        <title></title>
+    </head>
+    <body>
+        <div class="container">
+
+            <form class="contact_form" action="/admin/<?= isset($add_new) ? "add" : "edit" ?>/" method="post" name="contact_form">
+
+                <ul>
+                    <li>
+                        <h2><?= isset($add_new) ? "Создание" : "Правка" ?> пользователя </h2>
+                    </li>
+                    <li>
+                        <label for="name">Имя:</label>
+                        <input type="text" name="name" value="<?= $user->name ?? "" ?>" placeholder="Имя пользователя" required/>
+                    </li>
+                    <li>
+                        <label for="email">Email:</label>
+                        <input type="text" name="email" value="<?= $user->email ?? "" ?>"  placeholder="email пользователя"  required/>
+                        <!--<span class="form_hint">Proper format email</span>-->
+                    </li>
+                    <?php if (isset($add_new)): ?>
+                        <li>
+                            <label for="password">Пароль:</label>
+                            <input type="text" name="password" placeholder="пароль пользователя"  required/>
+                            <!--<span class="form_hint">Proper format email</span>-->
+                        </li>
+                    <?php endif; ?>
+                    <li>
+                        <label for="email">Админ:</label>
+                        <input type="checkbox" name="is_admin" <?= (isset($user) && $user->isAdmin()) ? "checked" : "" ?>/>
+                    </li>
+                    <li>
+                        <input type="hidden" name="id" value="<?= $user->id ?? "" ?>"/>
+                        <button class="submit" type="submit">Сохранить</button>
+                    </li>
+                    <?php if (isset($error)): ?>
+                        <li>
+                            <span style="color: red"><?= $error ?></span>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            </form>
+        </div>
+    </body>
+</html>

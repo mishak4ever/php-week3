@@ -5,29 +5,38 @@ namespace Base;
 use App\Controller\User;
 use App\Controller\Blog;
 
-class Application {
+class Application
+{
 
     private $route;
 
     /** @var AbstractController */
     private $controller;
     private $actionName;
+    private $param;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->route = new Route();
     }
 
-    public function run() {
+    public function run()
+    {
         try {
+            require_once 'Orm.php';
             $this->addRoutes();
             $this->initController();
             $this->initAction();
+            $this->initParam();
 
             $view = new View();
             $this->controller->setView($view);
             $this->initUser();
 
-            $content = $this->controller->{$this->actionName}();
+            if ($this->param)
+                $content = $this->controller->{$this->actionName}($this->param);
+            else
+                $content = $this->controller->{$this->actionName}();
 
             echo $content;
         } catch (RedirectException $e) {
@@ -39,7 +48,8 @@ class Application {
         }
     }
 
-    private function initUser() {
+    private function initUser()
+    {
         $Session = Session::getInstance();
 
         if ($user_id = $Session->getUserId()) {
@@ -50,19 +60,20 @@ class Application {
         }
     }
 
-    private function addRoutes() {
+    private function addRoutes()
+    {
         ///** @uses \App\Controller\User::loginAction() */
         $this->route->addRoute('/user/go', User::class, 'login');
         ///** @uses \App\Controller\User::registerAction() */
-        //$this->route->addRoute('/user/register', \App\Controller\User::class, 'register');
-        ///** @uses \App\Controller\Blog::indexAction() */
+        $this->route->addRoute('/admin/', \App\Controller\Admin::class, 'index');
         $this->route->addRoute('/blog', \App\Controller\Blog::class, 'index');
         $this->route->addRoute('/blog/', \App\Controller\Blog::class, 'index');
         //$this->route->addRoute('/blog/index', \App\Controller\Blog::class, 'index');
         $this->route->addRoute('/', Blog::class, 'index');
     }
 
-    private function initController() {
+    private function initController()
+    {
         $controllerName = $this->route->getControllerName();
         if (!class_exists($controllerName)) {
             throw new RouteException('Cant find controller ' . $controllerName);
@@ -71,7 +82,8 @@ class Application {
         $this->controller = new $controllerName();
     }
 
-    private function initAction() {
+    private function initAction()
+    {
         $actionName = $this->route->getActionName();
         if (!method_exists($this->controller, $actionName)) {
             $this->actionName = "index";
@@ -79,6 +91,11 @@ class Application {
         }
 
         $this->actionName = $actionName;
+    }
+
+    private function initParam()
+    {
+        $this->param = $this->route->getParam();
     }
 
 }

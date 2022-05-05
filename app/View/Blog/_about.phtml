@@ -1,5 +1,12 @@
 <div class="card">
-    <h2><?= $user->getName(); ?></h2>
+    <div style="display: flex;">
+        <div style="flex: 50%;">
+            <h2><?= $user->getName(); ?></h2>
+        </div>
+        <div>
+            <h2><a href="/admin">В админку</a></h2>
+        </div>
+    </div>
     <form method="post" action="/user/changeavatar" enctype="multipart/form-data" class="avatar-form">
         <label for="ava"><img src="<?= $user->getAva() ?? "/images/no_image.jpg" ?>" width="200" /></label>
         <input type="file" id="ava" name="ava"   accept=".jpg, .jpeg, .png" /><br />

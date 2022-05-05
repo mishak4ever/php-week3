@@ -2,14 +2,17 @@
 
 namespace Base;
 
-class Route {
+class Route
+{
 
     private $controllerName;
     private $actionName;
+    private $param;
     private $processed = false;
     private $routes;
 
-    private function process() {
+    private function process()
+    {
         if (!$this->processed) {
             $parts = parse_url($_SERVER['REQUEST_URI']);
             $path = $parts['path'];
@@ -20,31 +23,43 @@ class Route {
                 $parts = explode('/', $path);
                 $this->controllerName = '\\App\\Controller\\' . ucfirst(strtolower($parts[1]));
                 $this->actionName = strtolower($parts[2] ?? 'Index');
+                $this->param = strtolower($parts[3] ?? null);
             }
 
             $this->processed = true;
         }
     }
 
-    public function addRoute($path, $controllerName, $actionName) {
+    public function addRoute($path, $controllerName, $actionName)
+    {
         $this->routes[$path] = [
             $controllerName,
             $actionName
         ];
     }
 
-    public function getControllerName(): string {
+    public function getControllerName(): string
+    {
         if (!$this->processed) {
             $this->process();
         }
         return $this->controllerName;
     }
 
-    public function getActionName(): string {
+    public function getActionName(): string
+    {
         if (!$this->processed) {
             $this->process();
         }
         return $this->actionName . 'Action';
+    }
+
+    public function getParam()
+    {
+        if (!$this->processed) {
+            $this->process();
+        }
+        return $this->param;
     }
 
 }

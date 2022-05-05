@@ -14,6 +14,7 @@ class User extends AbstractModel
     private $created_at;
     private $email;
     private $ava;
+    private $is_admin;
 
     public function __construct($data = [])
     {
@@ -24,6 +25,7 @@ class User extends AbstractModel
             $this->password = $data['password'];
             $this->ava = $data['ava'] ?? "";
             $this->created_at = $data['created_at'];
+            $this->is_admin = $data['is_admin'] ?? false;
         }
     }
 
@@ -122,7 +124,8 @@ class User extends AbstractModel
 
     public function isAdmin(): bool
     {
-        return ($this->id == ADMIN_USER_ID);
+//        return ($this->id == ADMIN_USER_ID);
+        return (bool) $this->is_admin;
     }
 
     public function save()
