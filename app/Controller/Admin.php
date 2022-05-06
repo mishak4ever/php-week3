@@ -10,6 +10,20 @@ use Base\AbstractController;
 class Admin extends AbstractController
 {
 
+    private $userOrm;
+
+    public function __construct()
+    {
+        $Session = Session::getInstance();
+        if ($Session->getUserId()) {
+            $user = UserORM::find($Session->getUserId());
+            $this->userOrm = $user;
+        }
+        if (!$this->userOrm) {
+            $this->redirect('/user/login');
+        }
+    }
+
     public function indexAction()
     {
         $users = UserORM::all();
